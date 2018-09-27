@@ -26,6 +26,7 @@ def reduce_error(pool = None, X_val = None, y_val = None):
             l = np.delete(l, best_score_index)
             i += 1
         else:
+            print(len(best))
             return best
         score = pool.score(X_val, y_val)
 
@@ -46,5 +47,6 @@ def best_first(pool = None, X_val = None, y_val = None):
         new_score = pool.score(X_val, y_val)
         if score < new_score:
             score = new_score
-        else:
-            return best
+            aux = best[:]
+    print(len(aux))
+    return aux
