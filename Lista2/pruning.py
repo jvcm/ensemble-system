@@ -1,4 +1,6 @@
 import numpy as np
+from sklearn.ensemble import BaggingClassifier
+from sklearn.base import clone
 
 def reduce_error(pool = None, X_val = None, y_val = None):
     estim = np.zeros(len(pool.estimators_))
@@ -8,11 +10,11 @@ def reduce_error(pool = None, X_val = None, y_val = None):
     aux = pool.estimators_[:]
     best = list()
     best.append(pool.estimators_[l[0]])
-    pool.estimators_ = best
     l = np.delete(l, 0)
     i = 1
     score = 0
-    while l != np.array([]) :
+    
+    while len(l) > 0 :
         scores = np.zeros(len(l))
         
         for k, j in enumerate(l):
@@ -25,8 +27,9 @@ def reduce_error(pool = None, X_val = None, y_val = None):
             best.append(aux[l[best_score_index]])
             l = np.delete(l, best_score_index)
             i += 1
-        else:
-            print(len(best))
+        elif score >= scores.max():
+            print('*red',len(best))
+            pool.estimators_ = aux
             return best
         score = pool.score(X_val, y_val)
 
@@ -38,15 +41,18 @@ def best_first(pool = None, X_val = None, y_val = None):
     aux = pool.estimators_[:]
     best = list()
     best.append(pool.estimators_[l[0]])
-    pool.estimators_ = best
     l = np.delete(l, 0)
-    score = pool.score(X_val, y_val)
+    score = 0.0
+    best_final = best[:]
     for j in l:
         best.append(aux[j])
         pool.estimators_ = best
         new_score = pool.score(X_val, y_val)
         if score < new_score:
             score = new_score
-            aux = best[:]
-    print(len(aux))
-    return aux
+            best_final = best[:]
+        elif score >= new_score: 
+            continue
+    print('*best',len(best_final))
+    pool.estimators_ = aux
+    return best_final

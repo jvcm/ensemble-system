@@ -1,7 +1,7 @@
 from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
 def kDN(X, y):
-    knn = KNeighborsClassifier()
+    knn = KNeighborsClassifier(n_neighbors = 7)
     knn.fit(X, y)
     hard_inst = np.zeros(len(y))
     for i, yi in enumerate(y[knn.kneighbors(X)[1]]):

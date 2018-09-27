@@ -19,7 +19,7 @@ def __coefficients(y1 = None, y2 = None, y_true = None):
     coefs = np.array([N11, N10, N01, N00])
     return coefs
 
-def kappa(pool_list = None, X_val = None, y_val = None):
+def kappa(pool_list = [], X_val = None, y_val = None):
     kappa = list()
     c = combinations(range(len(pool_list)),2)
     tup = list()
@@ -31,7 +31,7 @@ def kappa(pool_list = None, X_val = None, y_val = None):
     kappa = np.array(kappa)
     return kappa.mean()
 
-def disagreement(pool_list = None, X_val = None, y_val = None):
+def disagreement(pool_list = [], X_val = None, y_val = None):
     disagree = list()
     c = combinations(range(len(pool_list)),2)
     tup = list()
@@ -42,7 +42,7 @@ def disagreement(pool_list = None, X_val = None, y_val = None):
         y1 = pool_list[i[0]].predict(X_val)
         y2 = pool_list[i[1]].predict(X_val)
         d = __coefficients(y1, y2, y_val)
-        Sum_Qik += (d[1] + d[2])/(d[0]+ d[1] + d[2] + d[3])
+        Sum_Qik += (d[1] + d[2])/(d.sum())
         N += 1
     return Sum_Qik/N
 
