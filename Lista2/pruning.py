@@ -28,7 +28,6 @@ def reduce_error(pool = None, X_val = None, y_val = None):
             l = np.delete(l, best_score_index)
             i += 1
         elif score >= scores.max():
-            print('*red',len(best))
             pool.estimators_ = aux
             return best
         score = pool.score(X_val, y_val)
@@ -53,6 +52,5 @@ def best_first(pool = None, X_val = None, y_val = None):
             best_final = best[:]
         elif score >= new_score: 
             continue
-    print('*best',len(best_final))
     pool.estimators_ = aux
     return best_final
